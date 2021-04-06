@@ -2,4 +2,5 @@
 int main()
 {
 	"hi";
+	"oi";
 }
