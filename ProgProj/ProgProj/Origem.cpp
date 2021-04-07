@@ -17,6 +17,7 @@ void board() // é possivel que tenhamos de mover esta funcao para outro file
 		}
 		cout << endl;
 	}
+	return;
 
 
 }
@@ -27,6 +28,7 @@ void play()
 	//cin >> maze_number;
 	board();
 	//aqui começam as cenas de criação de file.
+	return;
 }
 void menu()
 {
