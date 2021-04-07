@@ -1,5 +1,24 @@
 #include <iostream>
+#include <fstream>
+#include <string>
 using namespace std;
+void testes()
+{
+	ifstream arquivo;
+	string linha;
+	arquivo.open("mazedeteste.txt");
+	if (arquivo.is_open())
+	{
+		while (getline(arquivo, linha))
+		{
+			cout << linha << endl;
+		}
+	}
+	else
+	{
+		cout << "deu ruim";
+	}
+}
 void board() // é possivel que tenhamos de mover esta funcao para outro file 
 {
 	const int width = 60;
@@ -66,7 +85,8 @@ void menu()
 	}
 }
 int main()
-{
+{	
+	testes();
 	menu();
 	return 0;
 }
