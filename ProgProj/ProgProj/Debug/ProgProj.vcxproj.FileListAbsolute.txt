@@ -1,0 +1,2 @@
+D:\GitHub\ProgProject\ProgProj\ProgProj\Debug\ProgProj.exe
+D:\GitHub\ProgProject\ProgProj\ProgProj\Debug\ProgProj.pdb
