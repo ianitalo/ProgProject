@@ -1,10 +1,31 @@
 #include <iostream>
 using namespace std;
+const int width = 49;
+const int height = 49;
+void board() // é possivel que tenhamos de mover esta funcao para outro file 
+{
+	{
+		for (int j = 0, j = width, j++)
+		{
+			if (i == 0 || i == height)
+				cout << "X";
+			else
+				if (j == 0 || j == width)
+					cout << "X";
+				else
+					cout << " ";
+		}
+		cout << endl;
+	}
+
+
+}
 void play()
 {
-	int maze_number;
-	cout << "chooser the number of the maze: ";
-	cin >> maze_number;
+	//int maze_number;
+	//cout << "chooser the number of the maze: ";
+	//cin >> maze_number;
+	board();
 	//aqui começam as cenas de criação de file.
 }
 void menu()
