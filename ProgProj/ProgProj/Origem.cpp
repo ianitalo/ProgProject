@@ -1,31 +1,33 @@
 #include <iostream>
 using namespace std;
-const int width = 49;
-const int height = 49;
 void board() // é possivel que tenhamos de mover esta funcao para outro file 
 {
+	const int width = 60;
+	const int height = 25;
+	for (int i = 0; i < height; i++)
 	{
-		for (int j = 0, j = width, j++)
+		for (int j = 0; j < width; j++) // para fazer os mapas mudamos as condicoes em todas as barreiras menos as laterais e superiores
 		{
-			if (i == 0 || i == height)
+			if (i == 0 || i == (height - 1))// barreiras superiores
+				cout << "X";
+			else if (i % 6 == 0 && j <= (2 * width / 3)) // faz barreiras lado esquerdo (cobrem 2/3 da largura)
+				cout << "X";
+			else if ((i + 3) % 6 == 0 && j >= (1 * width / 3)) //  faz barreiras do lado direito 
+				cout << "X";
+			else if (j == 0 || j == (width - 1)) // barreiras laterais
 				cout << "X";
 			else
-				if (j == 0 || j == width)
-					cout << "X";
-				else
-					cout << " ";
+				cout << " ";
 		}
 		cout << endl;
 	}
 	return;
-
-
 }
 void play()
 {
-	//int maze_number;
-	//cout << "chooser the number of the maze: ";
-	//cin >> maze_number;
+	int maze_number;
+	cout << "chooser the number of the maze: ";
+	cin >> maze_number;
 	board();
 	//aqui começam as cenas de criação de file.
 	return;
@@ -53,7 +55,7 @@ void menu()
 			"Z           X            C" << endl << endl <<
 			"you can also stay in the same place by choosing 'S'" << endl << endl;
 		menu();
-	} 
+	}
 	else if (answer == 2)
 	{
 		play();
