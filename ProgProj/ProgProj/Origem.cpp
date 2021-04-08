@@ -46,12 +46,17 @@ void play()
 void menu()
 {
 	unsigned short answer;
-	cout << "choose :" << endl << "1 for Rules" << endl << "2 for Play" << endl << "0 for Exit" << endl;
+	cout <<
+		"--------------" << endl <<
+		"|choose :    |" << endl <<
+		"|1 for Rules |" << endl <<
+		"|2 for Play  |" << endl <<
+		"|0 for Exit  |" << endl <<
+		"--------------" << endl;
 	cin >> answer;
 	if (answer == 1)
 	{
-		cout << 
-			"----------------------------------------------------------------------------------------------------------" << endl <<
+		cout << "----------------------------------------------------------------------------------------------------------" << endl <<
 			"|                                                RULES                                                   |" << endl <<
 			"----------------------------------------------------------------------------------------------------------" << endl <<
 			"|You will be placed in a maze made up of high-voltage fences.                                            |" << endl <<
