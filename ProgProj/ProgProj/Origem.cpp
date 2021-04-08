@@ -2,6 +2,21 @@
 #include <fstream>
 #include <string>
 using namespace std;
+void maze_selection()
+{
+	string mapeamento;
+	string numero;
+	cout << "choose the maze number (01, 02 or 03):";
+	cin >> numero;
+	string ficheiro;
+	ficheiro = "MAZE_" + numero + ".TXT";
+	ifstream mapa1(ficheiro);
+	while (getline(mapa1, mapeamento))
+	{
+		cout << mapeamento << endl;
+	}
+	mapa1.close();
+}
 void testes()
 {
 	ifstream arquivo;
@@ -19,35 +34,12 @@ void testes()
 		cout << "deu ruim";
 	}
 }
-void board() // é possivel que tenhamos de mover esta funcao para outro file 
-{
-	const int width = 60;
-	const int height = 25;
-	for (int i = 0; i < height; i++)
-	{
-		for (int j = 0; j < width; j++) // para fazer os mapas mudamos as condicoes em todas as barreiras menos as laterais e superiores
-		{
-			if (i == 0 || i == (height - 1))// barreiras superiores
-				cout << "X";
-			else if (i % 6 == 0 && j <= (2 * width / 3)) // faz barreiras lado esquerdo (cobrem 2/3 da largura)
-				cout << "X";
-			else if ((i + 3) % 6 == 0 && j >= (1 * width / 3)) //  faz barreiras do lado direito 
-				cout << "X";
-			else if (j == 0 || j == (width - 1)) // barreiras laterais
-				cout << "X";
-			else
-				cout << " ";
-		}
-		cout << endl;
-	}
-	return;
-}
+
 void play()
 {
-	int maze_number;
-	cout << "chooser the number of the maze: ";
-	cin >> maze_number;
-	board();
+	//int maze_number;
+	//cout << "chooser the number of the maze: ";
+	//cin >> maze_number;
 	//aqui começam as cenas de criação de file.
 	return;
 }
@@ -58,7 +50,8 @@ void menu()
 	cin >> answer;
 	if (answer == 1)
 	{
-		cout << "----------------------------------------------------------------------------------------------------------" << endl <<
+		cout << 
+			"----------------------------------------------------------------------------------------------------------" << endl <<
 			"|                                                RULES                                                   |" << endl <<
 			"----------------------------------------------------------------------------------------------------------" << endl <<
 			"|You will be placed in a maze made up of high-voltage fences.                                            |" << endl <<
@@ -86,7 +79,7 @@ void menu()
 	}
 	else if (answer == 2)
 	{
-		play();
+		maze_selection();
 	}
 	else if (answer == 0)
 	{
@@ -95,7 +88,8 @@ void menu()
 }
 int main()
 {
-	testes();
+	//testes();
 	menu();
+	//maze_selection();
 	return 0;
 }
