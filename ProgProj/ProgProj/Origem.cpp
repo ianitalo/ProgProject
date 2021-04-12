@@ -5,7 +5,6 @@ using namespace std;
 void user_input()
 {
 	int x = 0, y = 0; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
-	cout << "pls input";
 	string inp;
 	cin >> inp;
 	
@@ -54,8 +53,9 @@ void user_input()
 	{
 		cout << "invalid input, try again.";
 	}
-	cout << x << "\n" << y;
 }
+
+
 void maze_selection()
 {
 	string mapeamento;
@@ -66,7 +66,7 @@ void maze_selection()
 	while (error)
 	{
 		cout << "choose the maze number (01, 02 or 03):";
-		cin >> numero;
+		cin >> numero;// vai ser preciso dar fill para aceitar 1 digito ou 2 digitos (ex: 1 e 01)
 		ficheiro = "MAZE_" + numero + ".TXT";
 		mapa.open(ficheiro);
 		if (mapa.is_open())
