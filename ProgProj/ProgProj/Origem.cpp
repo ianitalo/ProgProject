@@ -2,6 +2,60 @@
 #include <fstream>
 #include <string>
 using namespace std;
+void user_input()
+{
+	int x = 0, y = 0; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
+	cout << "pls input";
+	string inp;
+	cin >> inp;
+	
+	
+	if (inp == "q" || inp == "Q")
+	{
+		x -= 1;
+		y -= 1;
+	}
+	else if (inp == "w" || inp == "W")
+	{
+		y -= 1;
+	}
+	else if (inp == "e" || inp == "E")
+	{
+		x += 1;
+		y -= 1;
+	}
+	else if (inp == "a" || inp == "A")
+	{
+		x -= 1;
+	}
+	else if (inp == "s" || inp == "S")
+	{
+		//continue;
+	}
+	else if (inp == "d" || inp == "D")
+	{
+		x += 1;
+	}
+	else if (inp == "z" || inp == "Z")
+	{
+		x -= 1;
+		y += 1;
+	}
+	else if (inp == "x" || inp == "X")
+	{
+		y += 1;
+	}
+	else if (inp == "c" || inp == "C")
+	{
+		x += 1;
+		y += 1;
+	}
+	else
+	{
+		cout << "invalid input, try again.";
+	}
+	cout << x << "\n" << y;
+}
 void maze_selection()
 {
 	string mapeamento;
@@ -112,5 +166,6 @@ int main()
 	//testes();
 	menu();
 	//maze_selection();
+	//user_input();
 	return 0;
 }
