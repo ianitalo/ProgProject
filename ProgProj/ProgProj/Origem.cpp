@@ -79,7 +79,7 @@ void maze_selection()
 			mapa >> maze_height >> x >> maze_length;
 			vector<vector<char>> maze(maze_height, vector<char>(maze_length));
 			mapa >> noskipws;
-			for (int i = 0; i < maze_height; i++)
+			for (int i = 0; i < maze_height; i++) //this puts the maze into the vector
 			{
 				getline(mapa, mapeamento);
 				for (int j = 0; j < maze_length; j++)
