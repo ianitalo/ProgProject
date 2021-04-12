@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 using namespace std;
 void user_input()
 {
@@ -54,8 +55,10 @@ void user_input()
 		cout << "invalid input, try again.";
 	}
 }
-
-
+void play(vector<vector<char>> &maze)
+{
+	return;
+}
 void maze_selection()
 {
 	string mapeamento;
@@ -65,19 +68,27 @@ void maze_selection()
 	ifstream mapa;
 	while (error)
 	{
-		cout << "choose the maze number (01, 02 or 03):";
+		cout << "choose the maze number (01 to 99):";
 		cin >> numero;// vai ser preciso dar fill para aceitar 1 digito ou 2 digitos (ex: 1 e 01)
 		ficheiro = "MAZE_" + numero + ".TXT";
 		mapa.open(ficheiro);
 		if (mapa.is_open())
 		{
-			cout << "this is the maze you choose." << endl;
-			while (getline(mapa, mapeamento))
+			int maze_height, maze_length;
+			char x;
+			mapa >> maze_height >> x >> maze_length;
+			vector<vector<char>> maze(maze_height, vector<char>(maze_length));
+			mapa >> noskipws;
+			for (int i = 0; i < maze_height; i++)
 			{
-				cout << mapeamento << endl;
+				getline(mapa, mapeamento);
+				for (int j = 0; j < maze_length; j++)
+				{
+					mapa >> maze[i][j];
+				}
 			}
 			error = false;
-			//play();
+			play(maze);
 		}
 		else
 		{
@@ -85,14 +96,6 @@ void maze_selection()
 		}
 	}
 	mapa.close();
-}
-void play()
-{
-	//int maze_number;
-	//cout << "chooser the number of the maze: ";
-	//cin >> maze_number;
-	//aqui começam as cenas de criação de file.
-	return;
 }
 void menu()
 {
