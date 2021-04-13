@@ -2,11 +2,12 @@
 #include <fstream>
 #include <string>
 #include <vector>
+
 using namespace std;
-void user_input()
+void user_input(string player)
 {
-	int x = 0, y = 0; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
-	string inp;
+	int x=0, y=0; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
+	string inp; //a posição do player vai ser uma string x y separada por um " ", so precisamos fazer algo pra pegar isso.
 	cin >> inp;
 	
 	
@@ -54,8 +55,9 @@ void user_input()
 	{
 		cout << "invalid input, try again.";
 	}
+	return ;
 }
-void play(vector<vector<char>> &maze)
+void play(vector<vector<char>> &maze, vector<string> &robots,string player)
 {
 	return;
 }
@@ -75,9 +77,11 @@ void maze_selection()
 		if (mapa.is_open())
 		{
 			int maze_height, maze_length;
+			int	number_of_robots = 0;
+			string player_pos;
 			char x;
 			mapa >> maze_height >> x >> maze_length;
-			vector<vector<char>> maze(maze_height, vector<char>(maze_length));
+			vector<vector<char>> maze(maze_height, vector<char>(maze_length));		
 			mapa >> noskipws;
 			for (int i = 0; i < maze_height; i++) //this puts the maze into the vector
 			{
@@ -85,17 +89,38 @@ void maze_selection()
 				for (int j = 0; j < maze_length; j++)
 				{
 					mapa >> maze[i][j];
+					if (maze[i][j] == 'R')
+					{
+						number_of_robots++;
+					}
+					else if (maze[i][j] == 'H')
+					{
+						player_pos = to_string(i) + " " + to_string(j);
+					}
 				}
 			}
+			mapa.close();
+			vector<string> robots(number_of_robots+1);
+			int robot_id = 1;
+			for (int i = 0; i < maze_height; i++) //this creates an id for each robot and saves its position
+			{
+				for (int j = 0; j < maze_length; j++)
+				{
+					if (maze[i][j] == 'R')
+					{
+						robots[robot_id] = to_string(i) + " " + to_string(j); 
+						robot_id++;
+					}
+				}
+			}		
 			error = false;
-			play(maze);
+			play(maze,robots,player_pos);
 		}
 		else
 		{
 			cout << "not a valid maze number, please try again." << endl;
 		}
 	}
-	mapa.close();
 }
 void menu()
 {
