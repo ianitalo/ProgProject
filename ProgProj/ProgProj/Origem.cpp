@@ -4,10 +4,13 @@
 #include <vector>
 
 using namespace std;
-void user_input(string player)
+string user_input(string player)
 {
-	int x=0, y=0; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
-	string inp; //a posição do player vai ser uma string x y separada por um " ", so precisamos fazer algo pra pegar isso.
+	size_t space = player.find(" ");
+	int x, y; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
+	x = stoi(player.substr(0, space));//tem q fazer isso jaq a posição do player vem separada por um " "
+	y = stoi(player.substr(space));
+	string inp; 
 	cin >> inp;
 	
 	
@@ -55,10 +58,11 @@ void user_input(string player)
 	{
 		cout << "invalid input, try again.";
 	}
-	return ;
+	return to_string(x) + " " + to_string(y);
 }
 void play(vector<vector<char>> &maze, vector<string> &robots,string player)
 {
+	user_input(player);
 	return;
 }
 void maze_selection()
