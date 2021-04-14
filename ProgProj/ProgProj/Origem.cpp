@@ -4,7 +4,55 @@
 #include <vector>
 
 using namespace std;
-void display(vector<vector<char>> &maze)
+void gameover(string player)
+{
+	if (player != "Dead")
+	{
+		cout << "you win :) " << endl; 
+		/*"If the player survived, ask his / her name and update the list of winners, stored in the corresponding
+			MAZE_XX_WINNERS.TXT file, where XX represent the number of the maze(see below).Note: the name may
+			have more than one word but its length is limited to 15 characters."*/
+	}
+	else
+	{
+		cout << "you lose :( " << endl;
+	}
+}
+bool any_robots_alive(vector<string> &robots)
+{
+	for (size_t i = 1; i < robots.size(); i++)
+	{
+		if (robots[i] != "Dead")
+		{
+			return true;
+		}
+	}
+	return false;
+}
+void move_robots(vector<string> &robots, vector<vector<char>> &maze, string &player)
+{
+	for (size_t i = 1; i < robots.size(); i++)
+	{
+		if (player != "Dead" && any_robots_alive(robots))
+		{
+			if (robots[i] == "Dead") //the robot does not move if he is dead
+			{
+				continue;
+			}
+			else
+			{
+				//descobrir qual movimento leva a menor distancia entre robo e player
+				//desenhar os robo na nova posição e checar se eles morreram la (ou se matou o player)
+			}
+		}
+		else
+		{
+			gameover(player);
+			break;
+		}
+	}
+}
+void display(const vector<vector<char>> &maze)
 {
 	for (size_t i = 0; i < maze.size(); i++) //this creates an id for each robot and saves its position
 	{
@@ -16,78 +64,112 @@ void display(vector<vector<char>> &maze)
 	}
 	return;
 }
-string user_input(string player)
+void user_input(string &player, vector<vector<char>> &maze)
 {
 	size_t space = player.find(" ");
 	bool error = true;
-	int x, y; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
-	x = stoi(player.substr(0, space));//tem q fazer isso jaq a posição do player vem separada por um " "
-	y = stoi(player.substr(space));
-	string inp; 
+	int player_indice1, player_indice2; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
+	char inp; 
 	while (error)
 	{
+		player_indice1 = stoi(player.substr(0, space));//tem q fazer isso jaq a posição do player vem separada por um " "
+		player_indice2 = stoi(player.substr(space));
 		error = false;
 		cin >> inp;
-		if (!cin.good())
-		{
+		if (!cin.good()) //eu reescrevi o nome da variavel pq achei q tava confuso dps q percebi q tipo, ta invertido
+		{                //como a maze é do tipo [linha][coluna] o x movia pra cima e pra baixo (linha) e o y as colunas
 			cout << "invalid input, try again." << endl;
 			cin.clear();
 			cin.ignore(INT_MAX, '\n');
 			error = true;
 		}
-		else if (inp == "q" || inp == "Q")
+		else if (inp == 'q' || inp == 'Q')
 		{
-			x -= 1;
-			y -= 1;
+			player_indice1 -= 1;
+			player_indice2 -= 1;
 		}
-		else if (inp == "w" || inp == "W")
+		else if (inp == 'w' || inp == 'W')
 		{
-			y -= 1;
+			player_indice1 -= 1;			
 		}
-		else if (inp == "e" || inp == "E")
+		else if (inp == 'e' || inp == 'E')
 		{
-			x += 1;
-			y -= 1;
+			player_indice1 -= 1;
+			player_indice2 += 1;			
 		}
-		else if (inp == "a" || inp == "A")
+		else if (inp == 'a' || inp == 'A')
 		{
-			x -= 1;
+			player_indice2 -= 1;		
 		}
-		else if (inp == "s" || inp == "S")
+		else if (inp == 's' || inp == 'S')
 		{
-			//continue;
+			//dont move
 		}
-		else if (inp == "d" || inp == "D")
+		else if (inp == 'd' || inp == 'D')
 		{
-			x += 1;
+			player_indice2 += 1;			
 		}
-		else if (inp == "z" || inp == "Z")
+		else if (inp == 'z' || inp == 'Z')
 		{
-			x -= 1;
-			y += 1;
+			player_indice1 += 1;
+			player_indice2 -= 1;			
 		}
-		else if (inp == "x" || inp == "X")
+		else if (inp == 'x' || inp == 'X')
 		{
-			y += 1;
+			player_indice1 += 1;			
 		}
-		else if (inp == "c" || inp == "C")
+		else if (inp == 'c' || inp == 'C')
 		{
-			x += 1;
-			y += 1;
+			player_indice1 += 1;
+			player_indice2 += 1;
 		}
 		else
 		{
 			cout << "invalid input, try again.";
 			error = true;
 		}
+		if ((maze[player_indice1][player_indice2] == 'r') && !error) //player cant move to cells occupied by dead robots
+		{
+			cout << "you can not move this way, try again.";
+			error = true;
+		}
+		else if (maze[player_indice1][player_indice2] != ' ')
+		{
+			maze[player_indice1][player_indice2] = 'h';
+			player = "Dead";
+		}
+		else
+		{
+			maze[player_indice1][player_indice2] = 'H';
+			player = to_string(player_indice1) + " " + to_string(player_indice2);
+		}
 	}
-	return to_string(x) + " " + to_string(y);
+	
 }
+void maze_clear(vector<vector<char>>& maze)
+{
+	
+	for (size_t i = 0; i < maze.size(); i++) //this creates an id for each robot and saves its position
+	{
+		for (size_t j = 0; j < maze[i].size(); j++)
+		{
+			if (maze[i][j] == 'R' || maze[i][j] == 'H')
+			{
+				maze[i][j] = ' ';
+			}
+		}
+	}
+	return;
+} 
 void play(vector<vector<char>> &maze, vector<string> &robots,string player)
 {
-	display(maze);
-	user_input(player);
-	return;
+	while(player != "Dead" && any_robots_alive(robots)) //game ends if the player die or if there is no robots left alive
+	{
+		display(maze);						
+		maze_clear(maze);					//como ja temos salvo a posição do player e dos robos,
+		user_input(player, maze);			//podemos só apagar eles da maze e reescrever na nova posição
+		move_robots(robots, maze, player);
+	}
 }
 void maze_selection()
 {
