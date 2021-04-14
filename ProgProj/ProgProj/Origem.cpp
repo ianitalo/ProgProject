@@ -4,79 +4,119 @@
 #include <vector>
 
 using namespace std;
+void display(vector<vector<char>> &maze)
+{
+	for (size_t i = 0; i < maze.size(); i++) //this creates an id for each robot and saves its position
+	{
+		for (size_t j = 0; j < maze[i].size(); j++)
+		{
+			cout << maze[i][j];
+		}
+		cout << endl;
+	}
+	return;
+}
 string user_input(string player)
 {
 	size_t space = player.find(" ");
+	bool error = true;
 	int x, y; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
 	x = stoi(player.substr(0, space));//tem q fazer isso jaq a posição do player vem separada por um " "
 	y = stoi(player.substr(space));
 	string inp; 
-	cin >> inp;
-	
-	
-	if (inp == "q" || inp == "Q")
+	while (error)
 	{
-		x -= 1;
-		y -= 1;
-	}
-	else if (inp == "w" || inp == "W")
-	{
-		y -= 1;
-	}
-	else if (inp == "e" || inp == "E")
-	{
-		x += 1;
-		y -= 1;
-	}
-	else if (inp == "a" || inp == "A")
-	{
-		x -= 1;
-	}
-	else if (inp == "s" || inp == "S")
-	{
-		//continue;
-	}
-	else if (inp == "d" || inp == "D")
-	{
-		x += 1;
-	}
-	else if (inp == "z" || inp == "Z")
-	{
-		x -= 1;
-		y += 1;
-	}
-	else if (inp == "x" || inp == "X")
-	{
-		y += 1;
-	}
-	else if (inp == "c" || inp == "C")
-	{
-		x += 1;
-		y += 1;
-	}
-	else
-	{
-		cout << "invalid input, try again.";
+		error = false;
+		cin >> inp;
+		if (!cin.good())
+		{
+			cout << "invalid input, try again." << endl;
+			cin.clear();
+			cin.ignore(INT_MAX, '\n');
+			error = true;
+		}
+		else if (inp == "q" || inp == "Q")
+		{
+			x -= 1;
+			y -= 1;
+		}
+		else if (inp == "w" || inp == "W")
+		{
+			y -= 1;
+		}
+		else if (inp == "e" || inp == "E")
+		{
+			x += 1;
+			y -= 1;
+		}
+		else if (inp == "a" || inp == "A")
+		{
+			x -= 1;
+		}
+		else if (inp == "s" || inp == "S")
+		{
+			//continue;
+		}
+		else if (inp == "d" || inp == "D")
+		{
+			x += 1;
+		}
+		else if (inp == "z" || inp == "Z")
+		{
+			x -= 1;
+			y += 1;
+		}
+		else if (inp == "x" || inp == "X")
+		{
+			y += 1;
+		}
+		else if (inp == "c" || inp == "C")
+		{
+			x += 1;
+			y += 1;
+		}
+		else
+		{
+			cout << "invalid input, try again.";
+			error = true;
+		}
 	}
 	return to_string(x) + " " + to_string(y);
 }
 void play(vector<vector<char>> &maze, vector<string> &robots,string player)
 {
+	display(maze);
 	user_input(player);
 	return;
 }
 void maze_selection()
 {
 	string mapeamento;
-	string numero;
+	unsigned numero;
 	bool error = true;
 	string ficheiro;
 	ifstream mapa;
 	while (error)
 	{
 		cout << "choose the maze number (01 to 99):";
-		cin >> numero;// vai ser preciso dar fill para aceitar 1 digito ou 2 digitos (ex: 1 e 01)
-		ficheiro = "MAZE_" + numero + ".TXT";
+		do
+		{
+			cin.clear();
+			cin.ignore(INT_MAX, '\n');
+			cin >> numero;
+			if (!cin.good())
+			{
+				cout << "not a valid maze number, please try again." << endl;
+			}
+		} while (!cin.good());
+		if (numero >= 0 && numero < 10) //this is to make inputs like 1 and 01 to be accepted
+		{
+			ficheiro = "MAZE_0" + to_string(numero) + ".TXT";
+		}
+		else
+		{
+			ficheiro = "MAZE_" + to_string(numero) + ".TXT";
+		}
 		mapa.open(ficheiro);
 		if (mapa.is_open())
 		{
@@ -122,7 +162,7 @@ void maze_selection()
 		}
 		else
 		{
-			cout << "not a valid maze number, please try again." << endl;
+			cout << "not a existing maze number, please try again." << endl;
 		}
 	}
 }
@@ -144,7 +184,7 @@ void menu()
 		{
 			cout << "this is not a valid choice, please try again." << endl;
 			cin.clear();
-			cin.ignore(10000, '\n');
+			cin.ignore(INT_MAX, '\n');
 			error = true;
 		}
 		else if (answer == 1)
