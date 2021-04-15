@@ -565,7 +565,7 @@ void menu()
 				"|                                     Z           X            C                                         |" << endl <<
 				"|                                                                                                        |" << endl <<
 				"|you can also stay in the same place by choosing 'S'.                                                    |" << endl <<
-				"|be carefull! if you type in more then one letter, only the first one counts.                            |" << endl <<
+				"|be carefull! if you type in more than one letter, only the first one counts.                            |" << endl <<
 				"----------------------------------------------------------------------------------------------------------" << endl;
 			menu();
 			error = false;
