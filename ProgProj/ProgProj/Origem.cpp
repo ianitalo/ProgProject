@@ -8,7 +8,7 @@ void gameover(const string player)
 {
 	if (player != "Dead")
 	{
-		cout << "you win :) " << endl; 
+		cout << "you win :) " << endl;
 		/*"If the player survived, ask his / her name and update the list of winners, stored in the corresponding
 			MAZE_XX_WINNERS.TXT file, where XX represent the number of the maze(see below).Note: the name may
 			have more than one word but its length is limited to 15 characters."*/
@@ -18,7 +18,7 @@ void gameover(const string player)
 		cout << "you lose :( " << endl;
 	}
 }
-bool any_robots_alive(const vector<string> &robots)
+bool any_robots_alive(const vector<string>& robots)
 {
 	for (size_t i = 1; i < robots.size(); i++)
 	{
@@ -29,7 +29,7 @@ bool any_robots_alive(const vector<string> &robots)
 	}
 	return false;
 }
-void move_robots(vector<string> &robots, vector<vector<char>> &maze, string &player)
+void move_robots(vector<string>& robots, vector<vector<char>>& maze, string& player)
 {
 	for (size_t i = 1; i < robots.size(); i++)
 	{
@@ -41,8 +41,183 @@ void move_robots(vector<string> &robots, vector<vector<char>> &maze, string &pla
 			}
 			else
 			{
-				//descobrir qual movimento leva a menor distancia entre robo e player
-				//desenhar os robo na nova posição e checar se eles morreram la (ou se matou o player)
+				if (player_indice1 < robots_indice1 && player_indice2 < robots_indice2)
+				{
+					robots_indice1 -= 1;
+					robots_indice2 -= 1;
+					if (maze[robots_indice1][robots_indice2] = 'H')
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						player == "Dead";
+						gameover();
+					}
+					else if (maze[robots_indice1][robots_indice2] != ' ')
+					{
+						robots[i] == "Dead";
+						maze[robots_indice1][robots_indice2] == "r";
+					}
+					else
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
+					}
+				}
+				else if (player_indice1 < robots_indice1 && player_indice2 == robots_indice2)
+				{
+					robots_indice1 -= 1;
+
+					if (maze[robots_indice1][robots_indice2] = 'H')
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						player == "Dead";
+						gameover();
+					}
+					else if (maze[robots_indice1][robots_indice2] != ' ')
+					{
+						robots[i] == "Dead";
+						maze[robots_indice1][robots_indice2] == "r";
+					}
+					else
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
+					}
+				}
+				else if (player_indice1 < robots_indice1 && player_indice2 > robots_indice2)
+				{
+					robots_indice1 -= 1;
+					robots_indice2 += 1;
+
+					if (maze[robots_indice1][robots_indice2] = 'H')
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						player == "Dead";
+						gameover();
+					}
+					else if (maze[robots_indice1][robots_indice2] != ' ')
+					{
+						robots[i] == "Dead";
+						maze[robots_indice1][robots_indice2] == "r";
+					}
+					else
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
+					}
+				}
+				else if (player_indice1 == robots_indice1 && player_indice2 < robots_indice2)
+				{
+					robots_indice2 -= 1;
+
+					if (maze[robots_indice1][robots_indice2] = 'H')
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						player == "Dead";
+						gameover();
+					}
+					else if (maze[robots_indice1][robots_indice2] != ' ')
+					{
+						robots[i] == "Dead";
+						maze[robots_indice1][robots_indice2] == "r";
+					}
+					else
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
+					}
+				}
+				else if (player_indice1 == robots_indice1 && player_indice2 == robots_indice2)
+				{
+					maze[robots_indice1][robots_indice2] == "R";
+					player == "Dead";
+					gameover();
+				}
+				else if (player_indice1 == robots_indice1 && player_indice2 > robots_indice2)
+				{
+					robots_indice2 += 1;
+
+					if (maze[robots_indice1][robots_indice2] = 'H')
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						player == "Dead";
+						gameover();
+					}
+					else if (maze[robots_indice1][robots_indice2] != ' ')
+					{
+						robots[i] == "Dead";
+						maze[robots_indice1][robots_indice2] == "r";
+					}
+					else
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
+					}
+				}
+				else if (player_indice1 > robots_indice1 && player_indice2 < robots_indice2)
+				{
+					robots_indice1 += 1;
+					robots_indice2 -= 1;
+
+					if (maze[robots_indice1][robots_indice2] = 'H')
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						player == "Dead";
+						gameover();
+					}
+					else if (maze[robots_indice1][robots_indice2] != ' ')
+					{
+						robots[i] == "Dead";
+						maze[robots_indice1][robots_indice2] == "r";
+					}
+					else
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
+					}
+				}
+				else if (player_indice1 > robots_indice1 && player_indice2 == robots_indice2)
+				{
+					robots_indice1 += 1;
+
+					if (maze[robots_indice1][robots_indice2] = 'H')
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						player == "Dead";
+						gameover();
+					}
+					else if (maze[robots_indice1][robots_indice2] != ' ')
+					{
+						robots[i] == "Dead";
+						maze[robots_indice1][robots_indice2] == "r";
+					}
+					else
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
+					}
+				}
+				else if (player_indice1 > robots_indice1 && player_indice2 > robots_indice2)
+				{
+					robots_indice1 += 1;
+					robots_indice2 += 1;
+
+					if (maze[robots_indice1][robots_indice2] = 'H')
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						player == "Dead";
+						gameover();
+					}
+					else if (maze[robots_indice1][robots_indice2] != ' ')
+					{
+						robots[i] == "Dead";
+						maze[robots_indice1][robots_indice2] == "r";
+					}
+					else
+					{
+						maze[robots_indice1][robots_indice2] == "R";
+						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
+					}
+				}
 			}
 		}
 		else
@@ -52,7 +227,7 @@ void move_robots(vector<string> &robots, vector<vector<char>> &maze, string &pla
 		}
 	}
 }
-void display(const vector<vector<char>> &maze)
+void display(const vector<vector<char>>& maze)
 {
 	for (size_t i = 0; i < maze.size(); i++) //this creates an id for each robot and saves its position
 	{
@@ -64,12 +239,12 @@ void display(const vector<vector<char>> &maze)
 	}
 	return;
 }
-void user_input(string &player, vector<vector<char>> &maze)
+void user_input(string& player, vector<vector<char>>& maze)
 {
 	size_t space = player.find(" ");
 	bool error = true;
 	int player_indice1, player_indice2; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
-	char inp; 
+	char inp;
 	while (error)
 	{
 		player_indice1 = stoi(player.substr(0, space));//tem q fazer isso jaq a posição do player vem separada por um " "
@@ -90,16 +265,16 @@ void user_input(string &player, vector<vector<char>> &maze)
 		}
 		else if (inp == 'w' || inp == 'W')
 		{
-			player_indice1 -= 1;			
+			player_indice1 -= 1;
 		}
 		else if (inp == 'e' || inp == 'E')
 		{
 			player_indice1 -= 1;
-			player_indice2 += 1;			
+			player_indice2 += 1;
 		}
 		else if (inp == 'a' || inp == 'A')
 		{
-			player_indice2 -= 1;		
+			player_indice2 -= 1;
 		}
 		else if (inp == 's' || inp == 'S')
 		{
@@ -107,16 +282,16 @@ void user_input(string &player, vector<vector<char>> &maze)
 		}
 		else if (inp == 'd' || inp == 'D')
 		{
-			player_indice2 += 1;			
+			player_indice2 += 1;
 		}
 		else if (inp == 'z' || inp == 'Z')
 		{
 			player_indice1 += 1;
-			player_indice2 -= 1;			
+			player_indice2 -= 1;
 		}
 		else if (inp == 'x' || inp == 'X')
 		{
-			player_indice1 += 1;			
+			player_indice1 += 1;
 		}
 		else if (inp == 'c' || inp == 'C')
 		{
@@ -144,11 +319,11 @@ void user_input(string &player, vector<vector<char>> &maze)
 			player = to_string(player_indice1) + " " + to_string(player_indice2);
 		}
 	}
-	
+
 }
 void maze_clear(vector<vector<char>>& maze)
 {
-	
+
 	for (size_t i = 0; i < maze.size(); i++) //this creates an id for each robot and saves its position
 	{
 		for (size_t j = 0; j < maze[i].size(); j++)
@@ -160,12 +335,12 @@ void maze_clear(vector<vector<char>>& maze)
 		}
 	}
 	return;
-} 
-void play(vector<vector<char>> &maze, vector<string> &robots,string player)
+}
+void play(vector<vector<char>>& maze, vector<string>& robots, string player)
 {
-	while(player != "Dead" && any_robots_alive(robots)) //game ends if the player die or if there is no robots left alive
+	while (player != "Dead" && any_robots_alive(robots)) //game ends if the player die or if there is no robots left alive
 	{
-		display(maze);						
+		display(maze);
 		maze_clear(maze);					//como ja temos salvo a posição do player e dos robos,
 		user_input(player, maze);			//podemos só apagar eles da maze e reescrever na nova posição
 		move_robots(robots, maze, player);
@@ -207,7 +382,7 @@ void maze_selection()
 			string player_pos;
 			char x;
 			mapa >> maze_height >> x >> maze_length;
-			vector<vector<char>> maze(maze_height, vector<char>(maze_length));		
+			vector<vector<char>> maze(maze_height, vector<char>(maze_length));
 			mapa >> noskipws;
 			for (int i = 0; i < maze_height; i++) //this puts the maze into the vector
 			{
@@ -226,7 +401,7 @@ void maze_selection()
 				}
 			}
 			mapa.close();
-			vector<string> robots(number_of_robots+1);
+			vector<string> robots(number_of_robots + 1);
 			int robot_id = 1;
 			for (int i = 0; i < maze_height; i++) //this creates an id for each robot and saves its position
 			{
@@ -234,13 +409,13 @@ void maze_selection()
 				{
 					if (maze[i][j] == 'R')
 					{
-						robots[robot_id] = to_string(i) + " " + to_string(j); 
+						robots[robot_id] = to_string(i) + " " + to_string(j);
 						robot_id++;
 					}
 				}
-			}		
+			}
 			error = false;
-			play(maze,robots,player_pos);
+			play(maze, robots, player_pos);
 		}
 		else
 		{
@@ -252,7 +427,7 @@ void menu()
 {
 	unsigned short answer;
 	bool error = false;
-	do 
+	do
 	{
 		cout <<
 			"--------------" << endl <<
@@ -313,8 +488,8 @@ void menu()
 			cout << "this is not a valid choice, please try again." << endl;
 			error = true;
 		}
-		} while (error);
-	}
+	} while (error);
+}
 int main()
 {
 	//testes();
