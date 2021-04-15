@@ -4,8 +4,20 @@
 #include <vector>
 
 using namespace std;
-void gameover(const string player)
+void display(const vector<vector<char>>& maze)
 {
+	for (size_t i = 0; i < maze.size(); i++) //this creates an id for each robot and saves its position
+	{
+		for (size_t j = 0; j < maze[i].size(); j++)
+		{
+			cout << maze[i][j];
+		}
+		cout << endl;
+	}
+}
+void gameover(const string player, const vector<vector<char>>& maze)
+{
+	display(maze);
 	if (player != "Dead")
 	{
 		cout << "you win :) " << endl;
@@ -16,6 +28,27 @@ void gameover(const string player)
 	else
 	{
 		cout << "you lose :( " << endl;
+	}
+}
+bool collision_with_robots(const string player, const vector<string> &robots)
+{
+	for (size_t i = 1; i < robots.size(); i++)
+	{
+		if (robots[i] == player)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+void kill_backstabed_robots(vector<string>& robots, const int robots_indice1, const int robots_indice2)
+{
+	for (size_t i = 1; i < robots.size(); i++)
+	{
+		if (robots[i] == to_string(robots_indice1) + " " + to_string(robots_indice2))
+		{
+			robots[i] = "Dead";
+		}
 	}
 }
 bool any_robots_alive(const vector<string>& robots)
@@ -29,8 +62,12 @@ bool any_robots_alive(const vector<string>& robots)
 	}
 	return false;
 }
-void move_robots(vector<string>& robots, vector<vector<char>>& maze, string& player)
+void move_robots(string player, vector<vector<char>>& maze, vector<string>& robots)
 {
+	int player_indice1, player_indice2, robots_indice1, robots_indice2;
+	size_t space = player.find(" ");
+	player_indice1 = stoi(player.substr(0, space));
+	player_indice2 = stoi(player.substr(space));
 	for (size_t i = 1; i < robots.size(); i++)
 	{
 		if (player != "Dead" && any_robots_alive(robots))
@@ -41,24 +78,33 @@ void move_robots(vector<string>& robots, vector<vector<char>>& maze, string& pla
 			}
 			else
 			{
+				space = robots[i].find(" ");
+				robots_indice1 = stoi(robots[i].substr(0, space)); //get the position of the robot[i]
+				robots_indice2 = stoi(robots[i].substr(space));
+				
 				if (player_indice1 < robots_indice1 && player_indice2 < robots_indice2)
 				{
 					robots_indice1 -= 1;
 					robots_indice2 -= 1;
-					if (maze[robots_indice1][robots_indice2] = 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H')
 					{
-						maze[robots_indice1][robots_indice2] == "R";
-						player == "Dead";
-						gameover();
+						maze[robots_indice1][robots_indice2] = 'h';
+						player = "Dead";
+						gameover(player,maze);
+						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
-						robots[i] == "Dead";
-						maze[robots_indice1][robots_indice2] == "r";
+						if (maze[robots_indice1][robots_indice2] == 'R')
+						{
+							kill_backstabed_robots(robots,robots_indice1,robots_indice2);
+						}
+						robots[i] = "Dead";
+						maze[robots_indice1][robots_indice2] = 'r';
 					}
 					else
 					{
-						maze[robots_indice1][robots_indice2] == "R";
+						maze[robots_indice1][robots_indice2] = 'R';
 						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
 					}
 				}
@@ -66,20 +112,25 @@ void move_robots(vector<string>& robots, vector<vector<char>>& maze, string& pla
 				{
 					robots_indice1 -= 1;
 
-					if (maze[robots_indice1][robots_indice2] = 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H')
 					{
-						maze[robots_indice1][robots_indice2] == "R";
-						player == "Dead";
-						gameover();
+						maze[robots_indice1][robots_indice2] = 'h';
+						player = "Dead";
+						gameover(player,maze);
+						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
-						robots[i] == "Dead";
-						maze[robots_indice1][robots_indice2] == "r";
+						if (maze[robots_indice1][robots_indice2] == 'R')
+						{
+							kill_backstabed_robots(robots, robots_indice1, robots_indice2);
+						}
+						robots[i] = "Dead";
+						maze[robots_indice1][robots_indice2] = 'r';
 					}
 					else
 					{
-						maze[robots_indice1][robots_indice2] == "R";
+						maze[robots_indice1][robots_indice2] = 'R';
 						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
 					}
 				}
@@ -88,20 +139,25 @@ void move_robots(vector<string>& robots, vector<vector<char>>& maze, string& pla
 					robots_indice1 -= 1;
 					robots_indice2 += 1;
 
-					if (maze[robots_indice1][robots_indice2] = 'H')
+					if (maze[robots_indice1][robots_indice2] =='H')
 					{
-						maze[robots_indice1][robots_indice2] == "R";
-						player == "Dead";
-						gameover();
+						maze[robots_indice1][robots_indice2] = 'h';
+						player = "Dead";
+						gameover(player,maze);
+						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
-						robots[i] == "Dead";
-						maze[robots_indice1][robots_indice2] == "r";
+						if (maze[robots_indice1][robots_indice2] == 'R')
+						{
+							kill_backstabed_robots(robots, robots_indice1, robots_indice2);
+						}
+						robots[i] = "Dead";
+						maze[robots_indice1][robots_indice2] = 'r';
 					}
 					else
 					{
-						maze[robots_indice1][robots_indice2] == "R";
+						maze[robots_indice1][robots_indice2] = 'R';
 						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
 					}
 				}
@@ -109,47 +165,58 @@ void move_robots(vector<string>& robots, vector<vector<char>>& maze, string& pla
 				{
 					robots_indice2 -= 1;
 
-					if (maze[robots_indice1][robots_indice2] = 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H')
 					{
-						maze[robots_indice1][robots_indice2] == "R";
-						player == "Dead";
-						gameover();
+						maze[robots_indice1][robots_indice2] = 'h';
+						player = "Dead";
+						gameover(player,maze);
+						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
-						robots[i] == "Dead";
-						maze[robots_indice1][robots_indice2] == "r";
+						if (maze[robots_indice1][robots_indice2] == 'R')
+						{
+							kill_backstabed_robots(robots, robots_indice1, robots_indice2);
+						}
+						robots[i] = "Dead";
+						maze[robots_indice1][robots_indice2] = 'r';
 					}
 					else
 					{
-						maze[robots_indice1][robots_indice2] == "R";
+						maze[robots_indice1][robots_indice2] = 'R';
 						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
 					}
 				}
 				else if (player_indice1 == robots_indice1 && player_indice2 == robots_indice2)
 				{
-					maze[robots_indice1][robots_indice2] == "R";
-					player == "Dead";
-					gameover();
+					maze[robots_indice1][robots_indice2] = 'R';
+					player = "Dead";
+					gameover(player,maze);
+					break;
 				}
 				else if (player_indice1 == robots_indice1 && player_indice2 > robots_indice2)
 				{
 					robots_indice2 += 1;
 
-					if (maze[robots_indice1][robots_indice2] = 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H')
 					{
-						maze[robots_indice1][robots_indice2] == "R";
-						player == "Dead";
-						gameover();
+						maze[robots_indice1][robots_indice2] = 'h';
+						player = "Dead";
+						gameover(player,maze);
+						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
-						robots[i] == "Dead";
-						maze[robots_indice1][robots_indice2] == "r";
+						if (maze[robots_indice1][robots_indice2] == 'R')
+						{
+							kill_backstabed_robots(robots, robots_indice1, robots_indice2);
+						}
+						robots[i] = "Dead";
+						maze[robots_indice1][robots_indice2] = 'r';
 					}
 					else
 					{
-						maze[robots_indice1][robots_indice2] == "R";
+						maze[robots_indice1][robots_indice2] = 'R';
 						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
 					}
 				}
@@ -158,20 +225,25 @@ void move_robots(vector<string>& robots, vector<vector<char>>& maze, string& pla
 					robots_indice1 += 1;
 					robots_indice2 -= 1;
 
-					if (maze[robots_indice1][robots_indice2] = 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H')
 					{
-						maze[robots_indice1][robots_indice2] == "R";
-						player == "Dead";
-						gameover();
+						maze[robots_indice1][robots_indice2] = 'h';
+						player = "Dead";
+						gameover(player,maze);
+						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
-						robots[i] == "Dead";
-						maze[robots_indice1][robots_indice2] == "r";
+						if (maze[robots_indice1][robots_indice2] == 'R')
+						{
+							kill_backstabed_robots(robots, robots_indice1, robots_indice2);
+						}
+						robots[i] = "Dead";
+						maze[robots_indice1][robots_indice2] = 'r';
 					}
 					else
 					{
-						maze[robots_indice1][robots_indice2] == "R";
+						maze[robots_indice1][robots_indice2] = 'R';
 						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
 					}
 				}
@@ -179,20 +251,25 @@ void move_robots(vector<string>& robots, vector<vector<char>>& maze, string& pla
 				{
 					robots_indice1 += 1;
 
-					if (maze[robots_indice1][robots_indice2] = 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H')
 					{
-						maze[robots_indice1][robots_indice2] == "R";
-						player == "Dead";
-						gameover();
+						maze[robots_indice1][robots_indice2] = 'h';
+						player = "Dead";
+						gameover(player,maze);
+						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
-						robots[i] == "Dead";
-						maze[robots_indice1][robots_indice2] == "r";
+						if (maze[robots_indice1][robots_indice2] == 'R')
+						{
+							kill_backstabed_robots(robots, robots_indice1, robots_indice2);
+						}
+						robots[i] = "Dead";
+						maze[robots_indice1][robots_indice2] = 'r';
 					}
 					else
 					{
-						maze[robots_indice1][robots_indice2] == "R";
+						maze[robots_indice1][robots_indice2] = 'R';
 						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
 					}
 				}
@@ -201,20 +278,25 @@ void move_robots(vector<string>& robots, vector<vector<char>>& maze, string& pla
 					robots_indice1 += 1;
 					robots_indice2 += 1;
 
-					if (maze[robots_indice1][robots_indice2] = 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H')
 					{
-						maze[robots_indice1][robots_indice2] == "R";
-						player == "Dead";
-						gameover();
+						maze[robots_indice1][robots_indice2] = 'h';
+						player = "Dead";
+						gameover(player,maze);
+						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
-						robots[i] == "Dead";
-						maze[robots_indice1][robots_indice2] == "r";
+						if (maze[robots_indice1][robots_indice2] == 'R')
+						{
+							kill_backstabed_robots(robots, robots_indice1, robots_indice2);
+						}
+						robots[i] = "Dead";
+						maze[robots_indice1][robots_indice2] = 'r';
 					}
 					else
 					{
-						maze[robots_indice1][robots_indice2] == "R";
+						maze[robots_indice1][robots_indice2] = 'R';
 						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
 					}
 				}
@@ -222,24 +304,12 @@ void move_robots(vector<string>& robots, vector<vector<char>>& maze, string& pla
 		}
 		else
 		{
-			gameover(player);
+			gameover(player,maze);
 			break;
 		}
 	}
 }
-void display(const vector<vector<char>>& maze)
-{
-	for (size_t i = 0; i < maze.size(); i++) //this creates an id for each robot and saves its position
-	{
-		for (size_t j = 0; j < maze[i].size(); j++)
-		{
-			cout << maze[i][j];
-		}
-		cout << endl;
-	}
-	return;
-}
-void user_input(string& player, vector<vector<char>>& maze)
+void user_input(string& player, vector<vector<char>>& maze, vector<string> &robots)
 {
 	size_t space = player.find(" ");
 	bool error = true;
@@ -308,10 +378,15 @@ void user_input(string& player, vector<vector<char>>& maze)
 			cout << "you can not move this way, try again.";
 			error = true;
 		}
-		else if (maze[player_indice1][player_indice2] != ' ')
+		else
 		{
+			player = to_string(player_indice1) + " " + to_string(player_indice2); //valid move updates player to check collision
+		}
+		if (maze[player_indice1][player_indice2] != ' ' || collision_with_robots(player,robots))
+		{	
 			maze[player_indice1][player_indice2] = 'h';
 			player = "Dead";
+			gameover(player,maze);
 		}
 		else
 		{
@@ -341,9 +416,9 @@ void play(vector<vector<char>>& maze, vector<string>& robots, string player)
 	while (player != "Dead" && any_robots_alive(robots)) //game ends if the player die or if there is no robots left alive
 	{
 		display(maze);
-		maze_clear(maze);					//como ja temos salvo a posição do player e dos robos,
-		user_input(player, maze);			//podemos só apagar eles da maze e reescrever na nova posição
-		move_robots(robots, maze, player);
+		maze_clear(maze);					        //como ja temos salvo a posição do player e dos robos,
+		user_input(player, maze, robots);			//podemos só apagar eles da maze e reescrever na nova posição
+		move_robots(player, maze, robots);
 	}
 }
 void maze_selection()
@@ -491,10 +566,7 @@ void menu()
 	} while (error);
 }
 int main()
-{
-	//testes();
+{	
 	menu();
-	//maze_selection();
-	//user_input();
 	return 0;
 }
