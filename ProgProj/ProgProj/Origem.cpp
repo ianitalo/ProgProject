@@ -4,7 +4,7 @@
 #include <vector>
 
 using namespace std;
-void gameover(string player)
+void gameover(const string player)
 {
 	if (player != "Dead")
 	{
@@ -18,7 +18,7 @@ void gameover(string player)
 		cout << "you lose :( " << endl;
 	}
 }
-bool any_robots_alive(vector<string> &robots)
+bool any_robots_alive(const vector<string> &robots)
 {
 	for (size_t i = 1; i < robots.size(); i++)
 	{
