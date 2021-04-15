@@ -323,9 +323,13 @@ void user_input(string& player, vector<vector<char>>& maze, vector<string> &robo
 	char inp;
 	while (error)
 	{
-		player_indice1 = stoi(player.substr(0, space));//tem q fazer isso jaq a posição do player vem separada por um " "
-		player_indice2 = stoi(player.substr(space));
+		if (player != "Dead")
+		{
+			player_indice1 = stoi(player.substr(0, space));//tem q fazer isso jaq a posição do player vem separada por um " "
+			player_indice2 = stoi(player.substr(space));
+		}
 		error = false;
+		cout << "your move: ";
 		cin >> inp;
 		if (!cin.good()) //eu reescrevi o nome da variavel pq achei q tava confuso dps q percebi q tipo, ta invertido
 		{                //como a maze é do tipo [linha][coluna] o x movia pra cima e pra baixo (linha) e o y as colunas
@@ -376,9 +380,11 @@ void user_input(string& player, vector<vector<char>>& maze, vector<string> &robo
 		}
 		else
 		{
-			cout << "invalid input, try again.";
+			cout << "invalid input, try again." << endl;
+			cin.ignore(INT_MAX, '\n');
 			error = true;
 		}
+		cin.ignore(INT_MAX, '\n'); //in case the user type more then 1 letter ex: "abc"
 		if ((maze[player_indice1][player_indice2] == 'r') && !error) //player cant move to cells occupied by dead robots
 		{
 			cout << "you can not move this way, try again.";
@@ -559,6 +565,7 @@ void menu()
 				"|                                     Z           X            C                                         |" << endl <<
 				"|                                                                                                        |" << endl <<
 				"|you can also stay in the same place by choosing 'S'.                                                    |" << endl <<
+				"|be carefull! if you type in more then one letter, only the first one counts.                            |" << endl <<
 				"----------------------------------------------------------------------------------------------------------" << endl;
 			menu();
 			error = false;
