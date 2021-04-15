@@ -15,7 +15,7 @@ void display(const vector<vector<char>>& maze)
 		cout << endl;
 	}
 }
-void gameover(const string player, const vector<vector<char>>& maze)
+void gameover(string player, const vector<vector<char>>& maze)
 {
 	display(maze);
 	if (player != "Dead")
@@ -26,7 +26,7 @@ void gameover(const string player, const vector<vector<char>>& maze)
 			have more than one word but its length is limited to 15 characters."*/
 	}
 	else
-	{
+	{	
 		cout << "you lose :( " << endl;
 	}
 }
@@ -65,9 +65,15 @@ bool any_robots_alive(const vector<string>& robots)
 void move_robots(string player, vector<vector<char>>& maze, vector<string>& robots)
 {
 	int player_indice1, player_indice2, robots_indice1, robots_indice2;
+	
+	 
 	size_t space = player.find(" ");
-	player_indice1 = stoi(player.substr(0, space));
-	player_indice2 = stoi(player.substr(space));
+	if (player != "Dead")
+	{
+		player_indice1 = stoi(player.substr(0, space));
+		player_indice2 = stoi(player.substr(space));
+	}
+
 	for (size_t i = 1; i < robots.size(); i++)
 	{
 		if (player != "Dead" && any_robots_alive(robots))
@@ -313,7 +319,7 @@ void user_input(string& player, vector<vector<char>>& maze, vector<string> &robo
 {
 	size_t space = player.find(" ");
 	bool error = true;
-	int player_indice1, player_indice2; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
+	int player_indice1, player_indice2, robots_indice1,robots_indice2; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
 	char inp;
 	while (error)
 	{
@@ -381,17 +387,26 @@ void user_input(string& player, vector<vector<char>>& maze, vector<string> &robo
 		else
 		{
 			player = to_string(player_indice1) + " " + to_string(player_indice2); //valid move updates player to check collision
-		}
-		if (maze[player_indice1][player_indice2] != ' ' || collision_with_robots(player,robots))
-		{	
-			maze[player_indice1][player_indice2] = 'h';
-			player = "Dead";
-			gameover(player,maze);
-		}
-		else
-		{
-			maze[player_indice1][player_indice2] = 'H';
-			player = to_string(player_indice1) + " " + to_string(player_indice2);
+
+			if (maze[player_indice1][player_indice2] != ' ' || collision_with_robots(player, robots)) //player suicide
+			{
+				for (size_t i = 1; i < robots.size(); i++) //redraw robots in the maze in case player suicide
+				{
+					if (robots[i] != "Dead")
+					{
+						robots_indice1 = stoi(robots[i].substr(0, space)); //get the position of the robot[i]
+						robots_indice2 = stoi(robots[i].substr(space));
+						maze[robots_indice1][robots_indice2] = 'R';
+					}
+				}
+				maze[player_indice1][player_indice2] = 'h';
+				player = "Dead"; //in this case	gameover() should not be called because move_robots() will also call it		
+			}
+			else
+			{
+				maze[player_indice1][player_indice2] = 'H';
+				player = to_string(player_indice1) + " " + to_string(player_indice2);
+			}
 		}
 	}
 
