@@ -62,7 +62,7 @@ bool any_robots_alive(const vector<string>& robots)
 	}
 	return false;
 }
-void move_robots(string player, vector<vector<char>>& maze, vector<string>& robots)
+void move_robots(string &player, vector<vector<char>>& maze, vector<string>& robots)
 {
 	int player_indice1, player_indice2, robots_indice1, robots_indice2;
 	
@@ -72,11 +72,9 @@ void move_robots(string player, vector<vector<char>>& maze, vector<string>& robo
 	{
 		player_indice1 = stoi(player.substr(0, space));
 		player_indice2 = stoi(player.substr(space));
-	}
 
-	for (size_t i = 1; i < robots.size(); i++)
-	{
-		if (player != "Dead" && any_robots_alive(robots))
+
+		for (size_t i = 1; i < robots.size(); i++)
 		{
 			if (robots[i] == "Dead") //the robot does not move if he is dead
 			{
@@ -87,23 +85,21 @@ void move_robots(string player, vector<vector<char>>& maze, vector<string>& robo
 				space = robots[i].find(" ");
 				robots_indice1 = stoi(robots[i].substr(0, space)); //get the position of the robot[i]
 				robots_indice2 = stoi(robots[i].substr(space));
-				
+
 				if (player_indice1 < robots_indice1 && player_indice2 < robots_indice2)
 				{
 					robots_indice1 -= 1;
 					robots_indice2 -= 1;
-					if (maze[robots_indice1][robots_indice2] == 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H' || maze[robots_indice1][robots_indice2] == 'h')
 					{
 						maze[robots_indice1][robots_indice2] = 'h';
 						player = "Dead";
-						gameover(player,maze);
-						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
 						if (maze[robots_indice1][robots_indice2] == 'R')
 						{
-							kill_backstabed_robots(robots,robots_indice1,robots_indice2);
+							kill_backstabed_robots(robots, robots_indice1, robots_indice2);
 						}
 						robots[i] = "Dead";
 						maze[robots_indice1][robots_indice2] = 'r';
@@ -117,13 +113,10 @@ void move_robots(string player, vector<vector<char>>& maze, vector<string>& robo
 				else if (player_indice1 < robots_indice1 && player_indice2 == robots_indice2)
 				{
 					robots_indice1 -= 1;
-
-					if (maze[robots_indice1][robots_indice2] == 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H' || maze[robots_indice1][robots_indice2] == 'h')
 					{
 						maze[robots_indice1][robots_indice2] = 'h';
-						player = "Dead";
-						gameover(player,maze);
-						break;
+						player = "Dead";					
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
@@ -144,13 +137,10 @@ void move_robots(string player, vector<vector<char>>& maze, vector<string>& robo
 				{
 					robots_indice1 -= 1;
 					robots_indice2 += 1;
-
-					if (maze[robots_indice1][robots_indice2] =='H')
+					if (maze[robots_indice1][robots_indice2] == 'H' || maze[robots_indice1][robots_indice2] == 'h')
 					{
 						maze[robots_indice1][robots_indice2] = 'h';
 						player = "Dead";
-						gameover(player,maze);
-						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
@@ -170,13 +160,10 @@ void move_robots(string player, vector<vector<char>>& maze, vector<string>& robo
 				else if (player_indice1 == robots_indice1 && player_indice2 < robots_indice2)
 				{
 					robots_indice2 -= 1;
-
-					if (maze[robots_indice1][robots_indice2] == 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H' || maze[robots_indice1][robots_indice2] == 'h')
 					{
 						maze[robots_indice1][robots_indice2] = 'h';
 						player = "Dead";
-						gameover(player,maze);
-						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
@@ -193,23 +180,13 @@ void move_robots(string player, vector<vector<char>>& maze, vector<string>& robo
 						robots[i] = to_string(robots_indice1) + " " + to_string(robots_indice2);
 					}
 				}
-				else if (player_indice1 == robots_indice1 && player_indice2 == robots_indice2)
-				{
-					maze[robots_indice1][robots_indice2] = 'R';
-					player = "Dead";
-					gameover(player,maze);
-					break;
-				}
 				else if (player_indice1 == robots_indice1 && player_indice2 > robots_indice2)
 				{
 					robots_indice2 += 1;
-
-					if (maze[robots_indice1][robots_indice2] == 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H' || maze[robots_indice1][robots_indice2] == 'h')
 					{
 						maze[robots_indice1][robots_indice2] = 'h';
 						player = "Dead";
-						gameover(player,maze);
-						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
@@ -230,13 +207,10 @@ void move_robots(string player, vector<vector<char>>& maze, vector<string>& robo
 				{
 					robots_indice1 += 1;
 					robots_indice2 -= 1;
-
-					if (maze[robots_indice1][robots_indice2] == 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H' || maze[robots_indice1][robots_indice2] == 'h')
 					{
 						maze[robots_indice1][robots_indice2] = 'h';
 						player = "Dead";
-						gameover(player,maze);
-						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
@@ -256,13 +230,10 @@ void move_robots(string player, vector<vector<char>>& maze, vector<string>& robo
 				else if (player_indice1 > robots_indice1 && player_indice2 == robots_indice2)
 				{
 					robots_indice1 += 1;
-
-					if (maze[robots_indice1][robots_indice2] == 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H' || maze[robots_indice1][robots_indice2] == 'h')
 					{
 						maze[robots_indice1][robots_indice2] = 'h';
 						player = "Dead";
-						gameover(player,maze);
-						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
@@ -283,13 +254,10 @@ void move_robots(string player, vector<vector<char>>& maze, vector<string>& robo
 				{
 					robots_indice1 += 1;
 					robots_indice2 += 1;
-
-					if (maze[robots_indice1][robots_indice2] == 'H')
+					if (maze[robots_indice1][robots_indice2] == 'H' || maze[robots_indice1][robots_indice2] == 'h')
 					{
 						maze[robots_indice1][robots_indice2] = 'h';
 						player = "Dead";
-						gameover(player,maze);
-						break;
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
@@ -308,11 +276,11 @@ void move_robots(string player, vector<vector<char>>& maze, vector<string>& robo
 				}
 			}
 		}
-		else
-		{
-			gameover(player,maze);
-			break;
-		}
+	}
+	if (player == "Dead") //in case robots killed the player
+	{
+		gameover(player,maze);
+		return;
 	}
 }
 void user_input(string& player, vector<vector<char>>& maze, vector<string> &robots)
@@ -331,7 +299,7 @@ void user_input(string& player, vector<vector<char>>& maze, vector<string> &robo
 		error = false;
 		cout << "your move: ";
 		cin >> inp;
-		if (!cin.good()) //eu reescrevi o nome da variavel pq achei q tava confuso dps q percebi q tipo, ta invertido
+		if (!cin.good() || (cin.peek() != EOF && cin.peek() != '\n')) //eu reescrevi o nome da variavel pq achei q tava confuso dps q percebi q tipo, ta invertido
 		{                //como a maze é do tipo [linha][coluna] o x movia pra cima e pra baixo (linha) e o y as colunas
 			cout << "invalid input, try again." << endl;
 			cin.clear();
@@ -381,16 +349,16 @@ void user_input(string& player, vector<vector<char>>& maze, vector<string> &robo
 		else
 		{
 			cout << "invalid input, try again." << endl;
+			cin.clear();
 			cin.ignore(INT_MAX, '\n');
 			error = true;
 		}
-		cin.ignore(INT_MAX, '\n'); //in case the user type more then 1 letter ex: "abc"
 		if ((maze[player_indice1][player_indice2] == 'r') && !error) //player cant move to cells occupied by dead robots
 		{
-			cout << "you can not move this way, try again.";
+			cout << "you can not move this way, try again." << endl;
 			error = true;
 		}
-		else
+		else if (!error)
 		{
 			player = to_string(player_indice1) + " " + to_string(player_indice2); //valid move updates player to check collision
 
@@ -565,7 +533,6 @@ void menu()
 				"|                                     Z           X            C                                         |" << endl <<
 				"|                                                                                                        |" << endl <<
 				"|you can also stay in the same place by choosing 'S'.                                                    |" << endl <<
-				"|be carefull! if you type in more than one letter, only the first one counts.                            |" << endl <<
 				"----------------------------------------------------------------------------------------------------------" << endl;
 			menu();
 			error = false;
