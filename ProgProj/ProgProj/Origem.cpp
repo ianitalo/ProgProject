@@ -277,7 +277,7 @@ void move_robots(string &player, vector<vector<char>>& maze, vector<string>& rob
 			}
 		}
 	}
-	if (player == "Dead") //in case robots killed the player
+	if (player == "Dead" || !any_robots_alive(robots)) //in case robots killed the player or robots died
 	{
 		gameover(player,maze);
 		return;
