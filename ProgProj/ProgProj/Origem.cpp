@@ -2,8 +2,65 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <chrono>
+#include <algorithm>
 
 using namespace std;
+
+void leader_board(unsigned numero, char name[16], std::chrono::duration<double> time)
+{
+	string score;
+	vector<double> DoubVec;
+	if (numero >= 0 && numero < 10) //this is to make inputs like 1 and 01 to be accepted
+	{
+		ifstream collect("MAZE_0" + to_string(numero) + "_WINNERS.TXT");//coletar os valores da leaderboard
+		if (!collect)
+		{
+			cout << "cannot open leaderboard.";
+			return;
+		}
+		while (getline(collect, score));
+		{
+			double conversion = stod(score);
+			DoubVec.push_back(conversion);
+		}
+		DoubVec.push_back(time.count());
+		sort(DoubVec.begin(), DoubVec.end());
+		collect.close();
+
+		ofstream atualizado("MAZE_0" + to_string(numero) + "_WINNERS.TXT");
+		for (int i = 0; i < DoubVec.size(); i++)
+		{
+			atualizado << DoubVec[i] << endl;
+		}
+		atualizado.close();
+	}
+	else
+	{
+		ifstream collect("MAZE_" + to_string(numero) + "_WINNERS.TXT");//coletar os valores da leaderboard
+		if (!collect)
+		{
+			cout << "cannot open leaderboard.";
+			return;
+		}
+		while (getline(collect, score));
+		{
+			double conversion = stod(score);
+			DoubVec.push_back(conversion);
+		}
+		DoubVec.push_back(time.count());
+		sort(DoubVec.begin(), DoubVec.end());
+		collect.close();
+
+		ofstream atualizado("MAZE_" + to_string(numero) + "_WINNERS.TXT");
+		for (int i = 0; i < DoubVec.size(); i++)
+		{
+			atualizado << DoubVec[i] << endl;
+		}
+		atualizado.close();
+	}
+}
 void display(const vector<vector<char>>& maze)
 {
 	for (size_t i = 0; i < maze.size(); i++) //this creates an id for each robot and saves its position
@@ -15,22 +72,32 @@ void display(const vector<vector<char>>& maze)
 		cout << endl;
 	}
 }
-void gameover(string player, const vector<vector<char>>& maze)
+void gameover(string player, const vector<vector<char>>& maze, unsigned numero, std::chrono::high_resolution_clock::time_point start)
 {
+	auto end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> time = end - start;
+	char name[16];
 	display(maze);
 	if (player != "Dead")
 	{
 		cout << "you win :) " << endl;
+		cout << "time elapsed: " << time.count() << " s" << endl;
+		cout << "please enter your name here (note that only the first 15 chars will be saved): ";
+		cin.ignore();
+		cin.getline(name, 16);
+		leader_board(numero, name, time);
+
 		/*"If the player survived, ask his / her name and update the list of winners, stored in the corresponding
 			MAZE_XX_WINNERS.TXT file, where XX represent the number of the maze(see below).Note: the name may
 			have more than one word but its length is limited to 15 characters."*/
 	}
 	else
-	{	
+	{
+		cout << "time elapsed: " << time.count() << " s" << endl;
 		cout << "you lose :( " << endl;
 	}
 }
-bool collision_with_robots(const string player, const vector<string> &robots)
+bool collision_with_robots(const string player, const vector<string>& robots)
 {
 	for (size_t i = 1; i < robots.size(); i++)
 	{
@@ -62,11 +129,11 @@ bool any_robots_alive(const vector<string>& robots)
 	}
 	return false;
 }
-void move_robots(string &player, vector<vector<char>>& maze, vector<string>& robots)
+void move_robots(string& player, vector<vector<char>>& maze, vector<string>& robots, unsigned numero, std::chrono::high_resolution_clock::time_point start)
 {
 	int player_indice1, player_indice2, robots_indice1, robots_indice2;
-	
-	 
+
+
 	size_t space = player.find(" ");
 	if (player != "Dead")
 	{
@@ -116,7 +183,7 @@ void move_robots(string &player, vector<vector<char>>& maze, vector<string>& rob
 					if (maze[robots_indice1][robots_indice2] == 'H' || maze[robots_indice1][robots_indice2] == 'h')
 					{
 						maze[robots_indice1][robots_indice2] = 'h';
-						player = "Dead";					
+						player = "Dead";
 					}
 					else if (maze[robots_indice1][robots_indice2] != ' ')
 					{
@@ -279,15 +346,16 @@ void move_robots(string &player, vector<vector<char>>& maze, vector<string>& rob
 	}
 	if (player == "Dead" || !any_robots_alive(robots)) //in case robots killed the player or robots died
 	{
-		gameover(player,maze);
+
+		gameover(player, maze, numero, start);
 		return;
 	}
 }
-void user_input(string& player, vector<vector<char>>& maze, vector<string> &robots)
+void user_input(string& player, vector<vector<char>>& maze, vector<string>& robots)
 {
 	size_t space = player.find(" ");
 	bool error = true;
-	int player_indice1, player_indice2, robots_indice1,robots_indice2; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
+	int player_indice1, player_indice2, robots_indice1, robots_indice2; // coordenadas terao de ser incializadas dependendo do mapa ( se nao me engano o eixo dos y aponta para baixo e o x para a direita logo qnd vamos pra baixo somamos ao y)
 	char inp;
 	while (error)
 	{
@@ -400,14 +468,15 @@ void maze_clear(vector<vector<char>>& maze)
 	}
 	return;
 }
-void play(vector<vector<char>>& maze, vector<string>& robots, string player)
+void play(vector<vector<char>>& maze, vector<string>& robots, string player, unsigned numero, std::chrono::high_resolution_clock::time_point start)
 {
 	while (player != "Dead" && any_robots_alive(robots)) //game ends if the player die or if there is no robots left alive
 	{
 		display(maze);
 		maze_clear(maze);					        //como ja temos salvo a posição do player e dos robos,
-		user_input(player, maze, robots);			//podemos só apagar eles da maze e reescrever na nova posição
-		move_robots(player, maze, robots);
+		user_input(player, maze, robots);
+		move_robots(player, maze, robots, numero, start);
+
 	}
 }
 void maze_selection()
@@ -479,7 +548,8 @@ void maze_selection()
 				}
 			}
 			error = false;
-			play(maze, robots, player_pos);
+			auto start = std::chrono::high_resolution_clock::now();
+			play(maze, robots, player_pos, numero, start);
 		}
 		else
 		{
@@ -555,7 +625,7 @@ void menu()
 	} while (error);
 }
 int main()
-{	
+{
 	menu();
 	return 0;
 }
