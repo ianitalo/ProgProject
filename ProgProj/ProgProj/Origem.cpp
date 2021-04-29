@@ -5,62 +5,178 @@
 #include <cstdlib>
 #include <chrono>
 #include <algorithm>
-
+#include <cmath>
 using namespace std;
 
-void leader_board(unsigned numero, char name[16], std::chrono::duration<double> time)
+void leader_board(unsigned numero, string name, double rounded_time, string leader_string)
 {
-	string score;
+	vector<string> leaderboard_string;
+	string score, time, trash1, trash2, screen_string;
 	vector<double> DoubVec;
+
+
 	if (numero >= 0 && numero < 10) //this is to make inputs like 1 and 01 to be accepted
 	{
+		ofstream abrir("MAZE_0" + to_string(numero) + "_WINNERS.TXT", ios::app);
+		abrir.close();
+
 		ifstream collect("MAZE_0" + to_string(numero) + "_WINNERS.TXT");//coletar os valores da leaderboard
 		if (!collect)
 		{
 			cout << "cannot open leaderboard.";
 			return;
 		}
-		while (getline(collect, score));
-		{
-			double conversion = stod(score);
-			DoubVec.push_back(conversion);
-		}
-		DoubVec.push_back(time.count());
-		sort(DoubVec.begin(), DoubVec.end());
-		collect.close();
 
-		ofstream atualizado("MAZE_0" + to_string(numero) + "_WINNERS.TXT");
+		if (collect.is_open())
+		{
+			getline(collect, trash1);//ignora o header do ficheiro
+			getline(collect, trash2);//
+
+			while (getline(collect, score))
+			{
+				leaderboard_string.push_back(score);
+			}
+			for (int i = 0; i < leaderboard_string.size(); i++)
+			{
+				for (int j = 21; j >= 16; j--)
+				{
+					if (leaderboard_string[i][j] == ' ' || leaderboard_string[i][j] == '-')
+					{
+						break;
+					}
+					else
+					{
+						time = leaderboard_string[i][j] + time;
+					}
+				}
+				DoubVec.push_back(stoi(time));
+				time = "";
+			}
+		}
+
+		if (leaderboard_string.size() == 0)
+		{
+			leaderboard_string.push_back(leader_string);
+		}
+
+		bool last_score = false;
+
 		for (int i = 0; i < DoubVec.size(); i++)
 		{
-			atualizado << DoubVec[i] << endl;
+			if (rounded_time <= DoubVec[i])
+			{
+				leaderboard_string.insert(leaderboard_string.begin() + i, leader_string);
+				break;
+			}
+			if (i == DoubVec.size() - 1)
+			{
+				last_score = true;
+			}
+		}
+
+		if (last_score)
+		{
+			leaderboard_string.push_back(leader_string);
+		}
+
+		ofstream atualizado("MAZE_0" + to_string(numero) + "_WINNERS.TXT");
+		atualizado <<
+			"Player         –  Time" << endl <<
+			"----------------------" << endl;
+		for (int i = 0; i < leaderboard_string.size(); i++)
+		{
+			atualizado << leaderboard_string[i] << endl;
 		}
 		atualizado.close();
+
+		ifstream screen("MAZE_0" + to_string(numero) + "_WINNERS.TXT");
+		while (getline(screen, screen_string))
+		{
+			cout << screen_string << endl;
+		}
 	}
 	else
 	{
+		ofstream abrir("MAZE_" + to_string(numero) + "_WINNERS.TXT", ios::app);
+		abrir.close();
+
 		ifstream collect("MAZE_" + to_string(numero) + "_WINNERS.TXT");//coletar os valores da leaderboard
 		if (!collect)
 		{
 			cout << "cannot open leaderboard.";
 			return;
 		}
-		while (getline(collect, score));
-		{
-			double conversion = stod(score);
-			DoubVec.push_back(conversion);
-		}
-		DoubVec.push_back(time.count());
-		sort(DoubVec.begin(), DoubVec.end());
-		collect.close();
 
-		ofstream atualizado("MAZE_" + to_string(numero) + "_WINNERS.TXT");
+		if (collect.is_open())
+		{
+			getline(collect, trash1);//ignora o header do ficheiro
+			getline(collect, trash2);//
+
+			while (getline(collect, score))
+			{
+				leaderboard_string.push_back(score);
+			}
+			for (int i = 0; i < leaderboard_string.size(); i++)
+			{
+				for (int j = 21; j >= 16; j--)
+				{
+					if (leaderboard_string[i][j] == ' ' || leaderboard_string[i][j] == '-')
+					{
+						break;
+					}
+					else
+					{
+						time = leaderboard_string[i][j] + time;
+					}
+				}
+				DoubVec.push_back(stoi(time));
+				time = "";
+			}
+		}
+
+		if (leaderboard_string.size() == 0)
+		{
+			leaderboard_string.push_back(leader_string);
+		}
+
+		bool last_score = false;
+
 		for (int i = 0; i < DoubVec.size(); i++)
 		{
-			atualizado << DoubVec[i] << endl;
+			if (rounded_time <= DoubVec[i])
+			{
+				leaderboard_string.insert(leaderboard_string.begin() + i, leader_string);
+				break;
+			}
+			if (i == DoubVec.size() - 1)
+			{
+				last_score = true;
+			}
+		}
+
+		if (last_score)
+		{
+			leaderboard_string.push_back(leader_string);
+		}
+
+		ofstream atualizado("MAZE_" + to_string(numero) + "_WINNERS.TXT");
+		atualizado <<
+			"Player         –  Time" << endl <<
+			"----------------------" << endl;
+		for (int i = 0; i < leaderboard_string.size(); i++)
+		{
+			atualizado << leaderboard_string[i] << endl;
 		}
 		atualizado.close();
+
+		ifstream screen("MAZE_" + to_string(numero) + "_WINNERS.TXT");
+		while (getline(screen, screen_string))
+		{
+			cout << screen_string << endl;
+		}
 	}
 }
+
 void display(const vector<vector<char>>& maze)
 {
 	for (size_t i = 0; i < maze.size(); i++) //this creates an id for each robot and saves its position
@@ -76,16 +192,48 @@ void gameover(string player, const vector<vector<char>>& maze, unsigned numero, 
 {
 	auto end = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> time = end - start;
-	char name[16];
+	string name;
 	display(maze);
 	if (player != "Dead")
 	{
 		cout << "you win :) " << endl;
 		cout << "time elapsed: " << time.count() << " s" << endl;
-		cout << "please enter your name here (note that only the first 15 chars will be saved): ";
+		cout << "please enter your name here (note that the name must have a size between 1 and 15 chars.): ";
 		cin.ignore();
-		cin.getline(name, 16);
-		leader_board(numero, name, time);
+		getline(cin, name);
+
+		while (name.size() > 15 || name.size() < 1)
+		{
+			cout << "Invalid name size! please try again." << endl;
+			getline(cin, name);
+		}
+
+		int num_spaces = 15 - name.size(); // 
+		string spaces(num_spaces, ' ');    //  encher 15 chars com espacos caso nao tenham sido preenchidos
+		name = name + spaces;              //
+
+		double rounded_time = round(time.count() * 1000.0) / 1000.0; // arredondar de forma a q tenha no maximo 3 casas digitais (5 chars. qnd segundos < 10)
+		string rounded_string = to_string(rounded_time);
+		for (int i = rounded_string.size() - 1; i > 0; i--)
+		{
+			if (rounded_string[i] == '0')
+			{
+				rounded_string.pop_back();
+			}
+			else
+			{
+				break;
+			}
+		}
+		int time_size = rounded_string.size();//
+
+		num_spaces = 0;                                 // msm q o nome mas para o tempo
+		num_spaces = 6 - time_size;                     //
+		string time_spaces(num_spaces, ' ');			//
+
+		string leader_string = name + "-" + time_spaces + rounded_string;
+
+		leader_board(numero, name, rounded_time, leader_string);
 
 		/*"If the player survived, ask his / her name and update the list of winners, stored in the corresponding
 			MAZE_XX_WINNERS.TXT file, where XX represent the number of the maze(see below).Note: the name may
