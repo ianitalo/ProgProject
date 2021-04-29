@@ -1,6 +1,7 @@
-Player         –  Time
+Player         -  Time
 ----------------------
 ian            - 3.649
 iiia           - 3.638
+iiiiian        - 3.527
 ian            - 4.839
 lil ian        - 4.313

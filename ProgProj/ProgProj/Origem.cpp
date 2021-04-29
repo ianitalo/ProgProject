@@ -87,7 +87,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 
 		ofstream updated("MAZE_0" + to_string(number) + "_WINNERS.TXT");
 		updated <<
-			"Player         –  Time" << endl <<
+			"Player         -  Time" << endl <<
 			"----------------------" << endl;
 		for (unsigned i = 0; i < leaderboard_string.size(); i++)
 		{
@@ -167,7 +167,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 
 		ofstream updated("MAZE_" + to_string(number) + "_WINNERS.TXT");
 		updated <<
-			"Player         –  Time" << endl <<
+			"Player         -  Time" << endl <<
 			"----------------------" << endl;
 		for (unsigned i = 0; i < leaderboard_string.size(); i++)
 		{
