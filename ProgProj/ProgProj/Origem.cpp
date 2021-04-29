@@ -7,7 +7,13 @@
 #include <algorithm>
 #include <cmath>
 using namespace std;
-
+double tempo()
+{
+	static std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+	std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> tempo = end - start;
+	return tempo.count();
+}
 void leader_board(unsigned number, string name, double rounded_time, string leader_string)
 {
 	vector<string> leaderboard_string;
@@ -36,7 +42,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 			{
 				leaderboard_string.push_back(score); // fill vector with relevant info from the leaderboard (previous names + scores)
 			}
-			for (int i = 0; i < leaderboard_string.size(); i++)// allows us to get the actual score value from the leaderboard's strings
+			for (unsigned i = 0; i < leaderboard_string.size(); i++)// allows us to get the actual score value from the leaderboard's strings
 			{
 				for (int j = 21; j >= 16; j--)
 				{
@@ -61,7 +67,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 
 		bool last_score = false;
 
-		for (int i = 0; i < DoubVec.size(); i++)// check if current time is better than each of the times on the leader board, if it is add it to the 
+		for (unsigned i = 0; i < DoubVec.size(); i++)// check if current time is better than each of the times on the leader board, if it is add it to the 
 		{										// vector on that position. This automatically sorts the board.
 			if (rounded_time <= DoubVec[i])
 			{
@@ -83,7 +89,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 		updated <<
 			"Player         –  Time" << endl <<
 			"----------------------" << endl;
-		for (int i = 0; i < leaderboard_string.size(); i++)
+		for (unsigned i = 0; i < leaderboard_string.size(); i++)
 		{
 			updated << leaderboard_string[i] << endl; //write updated file with info from vector
 		}
@@ -116,7 +122,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 			{
 				leaderboard_string.push_back(score);
 			}
-			for (int i = 0; i < leaderboard_string.size(); i++)
+			for (unsigned i = 0; i < leaderboard_string.size(); i++)
 			{
 				for (int j = 21; j >= 16; j--)
 				{
@@ -141,7 +147,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 
 		bool last_score = false;
 
-		for (int i = 0; i < DoubVec.size(); i++)
+		for (unsigned i = 0; i < DoubVec.size(); i++)
 		{
 			if (rounded_time <= DoubVec[i])
 			{
@@ -163,7 +169,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 		updated <<
 			"Player         –  Time" << endl <<
 			"----------------------" << endl;
-		for (int i = 0; i < leaderboard_string.size(); i++)
+		for (unsigned i = 0; i < leaderboard_string.size(); i++)
 		{
 			updated << leaderboard_string[i] << endl;
 		}
@@ -176,7 +182,6 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 		}
 	}
 }
-
 void display(const vector<vector<char>>& maze) //displays maze with updated positions
 {
 	for (size_t i = 0; i < maze.size(); i++)
@@ -188,31 +193,38 @@ void display(const vector<vector<char>>& maze) //displays maze with updated posi
 		cout << endl;
 	}
 }
-void gameover(string player, const vector<vector<char>>& maze, unsigned number, std::chrono::high_resolution_clock::time_point start)
+void gameover(string player, const vector<vector<char>>& maze, unsigned number)
 {
-	auto end = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> time = end - start;
+	double time = tempo();
 	string name;
 	display(maze);
 	if (player != "Dead")
 	{
 		cout << "you win :) " << endl;
-		cout << "time elapsed: " << time.count() << " s" << endl;
+		cout << "time elapsed: " << time << " s" << endl;
 		cout << "please enter your name here (note that the name must have a size between 1 and 15 chars.): ";
 		cin.ignore();
 		getline(cin, name);
+		if (cin.eof())
+		{
+			return;
+		}
 
 		while (name.size() > 15 || name.size() < 1)
 		{
 			cout << "Invalid name size! please try again." << endl;
 			getline(cin, name);
+			if (cin.eof())
+			{
+				return;
+			}
 		}
 
 		int num_spaces = 15 - name.size(); // 
 		string spaces(num_spaces, ' ');    //  fill name with " " untill desired length ( so it fits the leaderboard )
 		name = name + spaces;              //
 
-		double rounded_time = round(time.count() * 1000.0) / 1000.0; // rounding time to 3 digits
+		double rounded_time = round(time * 1000.0) / 1000.0; // rounding time to 3 digits
 		string rounded_string = to_string(rounded_time);
 		for (int i = rounded_string.size() - 1; i > 0; i--) // even after rounding, a few of the 0s to the right are considered in the .size() function, this for loop is a work-around.
 		{
@@ -238,7 +250,7 @@ void gameover(string player, const vector<vector<char>>& maze, unsigned number, 
 	}
 	else
 	{
-		cout << "time elapsed: " << time.count() << " s" << endl;
+		cout << "time elapsed: " << time << " s" << endl;
 		cout << "you lose :( " << endl;
 	}
 }
@@ -274,7 +286,7 @@ bool any_robots_alive(const vector<string>& robots)
 	}
 	return false;
 }
-void move_robots(string& player, vector<vector<char>>& maze, vector<string>& robots, unsigned numero, std::chrono::high_resolution_clock::time_point start)
+void move_robots(string& player, vector<vector<char>>& maze, vector<string>& robots, unsigned numero)
 {
 	int player_indice1, player_indice2, robots_indice1, robots_indice2;
 
@@ -499,7 +511,7 @@ void move_robots(string& player, vector<vector<char>>& maze, vector<string>& rob
 	}
 	if (player == "Dead" || !any_robots_alive(robots)) //in case robots killed the player or robots died
 	{
-		gameover(player, maze, numero, start);
+		gameover(player, maze, numero);
 		return;
 	}
 }
@@ -519,6 +531,10 @@ void user_input(string& player, vector<vector<char>>& maze, vector<string>& robo
 		error = false;
 		cout << "your move: ";
 		cin >> inp;
+		if (cin.eof())
+		{
+			return;
+		}
 		if (!cin.good() || (cin.peek() != EOF && cin.peek() != '\n'))
 		{
 			cout << "invalid input, try again." << endl;
@@ -620,15 +636,14 @@ void maze_clear(vector<vector<char>>& maze) // clears the maze of all entities e
 	}
 	return;
 }
-void play(vector<vector<char>>& maze, vector<string>& robots, string player, unsigned number, std::chrono::high_resolution_clock::time_point start)
+void play(vector<vector<char>>& maze, vector<string>& robots, string player, unsigned number)
 {
-	while (player != "Dead" && any_robots_alive(robots)) //game ends if the player dies or if there are no robots left alive
+	while (player != "Dead" && any_robots_alive(robots) && !cin.eof()) //game ends if the player dies or if there are no robots left alive
 	{
 		display(maze);
 		maze_clear(maze);
 		user_input(player, maze, robots);
-		move_robots(player, maze, robots, number, start);
-
+		move_robots(player, maze, robots, number);
 	}
 }
 void maze_selection()
@@ -639,12 +654,16 @@ void maze_selection()
 	ifstream map;
 	while (error)
 	{
-		cout << "choose the maze number (01 to 99):";
+		cout << "choose the maze number (01 to 99): ";
 		do
 		{
 			cin.clear();
 			cin.ignore(INT_MAX, '\n');
 			cin >> number;
+			if (cin.eof())
+			{
+				return;
+			}
 			if (!cin.good())
 			{
 				cout << "not a valid maze number, please try again." << endl;
@@ -698,8 +717,8 @@ void maze_selection()
 				}
 			}
 			error = false;
-			auto start = std::chrono::high_resolution_clock::now();
-			play(maze, robots, player_pos, number, start);
+			tempo();
+			play(maze, robots, player_pos, number);
 		}
 		else
 		{
@@ -711,6 +730,13 @@ void menu()
 {
 	unsigned short answer;
 	bool error = false;
+	cout << ">======>                >=>                   >=>          >=>       >=>                                " << endl;
+	cout << ">=>    >=>              >=>                   >=>          >> >=>   >>=>                                " << endl;
+	cout << ">=>    >=>      >=>     >=>         >=>     >=>>==>        >=> >=> > >=>    >=> >=>  >====>>=>   >==>   " << endl;
+	cout << ">> >==>       >=>  >=>  >=>>==>   >=>  >=>    >=>          >=>  >=>  >=>  >=>   >=>       >=>  >>   >=> " << endl;
+	cout << ">=>  >=>     >=>    >=> >=>  >=> >=>    >=>   >=>          >=>   >>  >=> >=>    >=>     >=>    >>===>>=>" << endl;
+	cout << ">=>    >=>    >=>  >=>  >=>  >=>  >=>  >=>    >=>          >=>       >=>  >=>   >=>    >=>     >>       " << endl;
+	cout << ">=>      >=>    >=>     >=>>==>     >=>        >=>         >=>       >=>   >==>>>==> >=======>  >====>  " << endl;
 	do
 	{
 		cout <<
@@ -721,6 +747,10 @@ void menu()
 			"|0 for Exit  |" << endl <<
 			"--------------" << endl;
 		cin >> answer;
+		if (cin.eof())
+		{
+			return;
+		}
 		if (!cin.good())
 		{
 			cout << "this is not a valid choice, please try again." << endl;
