@@ -55,7 +55,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 						time = leaderboard_string[i][j] + time;
 					}
 				}
-				DoubVec.push_back(stoi(time));// each score is added to a vector
+				DoubVec.push_back(stod(time));// each score is added to a vector
 				time = "";
 			}
 		}
@@ -135,7 +135,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 						time = leaderboard_string[i][j] + time;
 					}
 				}
-				DoubVec.push_back(stoi(time));
+				DoubVec.push_back(stod(time));
 				time = "";
 			}
 		}
