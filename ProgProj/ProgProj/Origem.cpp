@@ -1,3 +1,4 @@
+//T07_G06
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -42,7 +43,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 			{
 				leaderboard_string.push_back(score); // fill vector with relevant info from the leaderboard (previous names + scores)
 			}
-			for (unsigned i = 0; i < leaderboard_string.size(); i++)// allows us to get the actual score value from the leaderboard's strings
+			for (size_t i = 0; i < leaderboard_string.size(); i++)// allows us to get the actual score value from the leaderboard's strings
 			{
 				for (int j = 21; j >= 16; j--)
 				{
@@ -67,7 +68,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 
 		bool last_score = false;
 
-		for (unsigned i = 0; i < DoubVec.size(); i++)// check if current time is better than each of the times on the leader board, if it is add it to the 
+		for (size_t i = 0; i < DoubVec.size(); i++)// check if current time is better than each of the times on the leader board, if it is add it to the 
 		{										// vector on that position. This automatically sorts the board.
 			if (rounded_time <= DoubVec[i])
 			{
@@ -89,7 +90,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 		updated <<
 			"Player         -  Time" << endl <<
 			"----------------------" << endl;
-		for (unsigned i = 0; i < leaderboard_string.size(); i++)
+		for (size_t i = 0; i < leaderboard_string.size(); i++)
 		{
 			updated << leaderboard_string[i] << endl; //write updated file with info from vector
 		}
@@ -122,7 +123,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 			{
 				leaderboard_string.push_back(score);
 			}
-			for (unsigned i = 0; i < leaderboard_string.size(); i++)
+			for (size_t i = 0; i < leaderboard_string.size(); i++)
 			{
 				for (int j = 21; j >= 16; j--)
 				{
@@ -147,7 +148,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 
 		bool last_score = false;
 
-		for (unsigned i = 0; i < DoubVec.size(); i++)
+		for (size_t i = 0; i < DoubVec.size(); i++)
 		{
 			if (rounded_time <= DoubVec[i])
 			{
@@ -169,7 +170,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 		updated <<
 			"Player         -  Time" << endl <<
 			"----------------------" << endl;
-		for (unsigned i = 0; i < leaderboard_string.size(); i++)
+		for (size_t i = 0; i < leaderboard_string.size(); i++)
 		{
 			updated << leaderboard_string[i] << endl;
 		}
@@ -526,7 +527,7 @@ void user_input(string& player, vector<vector<char>>& maze, vector<string>& robo
 		if (player != "Dead")
 		{
 			player_indice1 = stoi(player.substr(0, space));// player coords as ints
-			player_indice2 = stoi(player.substr(space));   //
+			player_indice2 = stoi(player.substr(space)); 
 		}
 		error = false;
 		cout << "your move: ";
@@ -621,7 +622,7 @@ void user_input(string& player, vector<vector<char>>& maze, vector<string>& robo
 	}
 
 }
-void maze_clear(vector<vector<char>>& maze) // clears the maze of all entities excepts walls, so that they can be written in the new position
+void maze_clear(vector<vector<char>>& maze) // clears the maze of all entities excepts walls and dead robots, so that they can be written in the new position
 {
 
 	for (size_t i = 0; i < maze.size(); i++)
@@ -639,6 +640,7 @@ void maze_clear(vector<vector<char>>& maze) // clears the maze of all entities e
 void play(vector<vector<char>>& maze, vector<string>& robots, string player, unsigned number)
 {
 	while (player != "Dead" && any_robots_alive(robots) && !cin.eof()) //game ends if the player dies or if there are no robots left alive
+																		//or if player types cntrl + z/contrl + d
 	{
 		display(maze);
 		maze_clear(maze);
@@ -692,7 +694,7 @@ void maze_selection()
 				for (int j = 0; j < maze_length; j++)
 				{
 					map >> maze[i][j];
-					if (maze[i][j] == 'R') // finds robots
+					if (maze[i][j] == 'R') // find robots
 					{
 						number_of_robots++;
 					}
