@@ -19,7 +19,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 {
 	vector<string> leaderboard_string;
 	string score, time, trash1, trash2, screen_string;
-	vector<double> DoubVec;
+	vector<double> ScoresVec;
 
 	// comments are mirrored for both parts of this if statement
 	if (number >= 0 && number < 10) //this is to make inputs like 1 and 01 to be accepted
@@ -56,7 +56,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 						time = leaderboard_string[i][j] + time;
 					}
 				}
-				DoubVec.push_back(stod(time));// each score is added to a vector
+				ScoresVec.push_back(stod(time));// each score is added to a vector
 				time = "";
 			}
 		}
@@ -68,14 +68,14 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 
 		bool last_score = false;
 
-		for (size_t i = 0; i < DoubVec.size(); i++)// check if current time is better than each of the times on the leader board, if it is add it to the 
+		for (size_t i = 0; i < ScoresVec.size(); i++)// check if current time is better than each of the times on the leader board, if it is add it to the 
 		{										// vector on that position. This automatically sorts the board.
-			if (rounded_time <= DoubVec[i])
+			if (rounded_time <= ScoresVec[i])
 			{
 				leaderboard_string.insert(leaderboard_string.begin() + i, leader_string);
 				break;
 			}
-			if (i == DoubVec.size() - 1)
+			if (i == ScoresVec.size() - 1)
 			{
 				last_score = true;
 			}
@@ -136,7 +136,7 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 						time = leaderboard_string[i][j] + time;
 					}
 				}
-				DoubVec.push_back(stod(time));
+				ScoresVec.push_back(stod(time));
 				time = "";
 			}
 		}
@@ -148,14 +148,14 @@ void leader_board(unsigned number, string name, double rounded_time, string lead
 
 		bool last_score = false;
 
-		for (size_t i = 0; i < DoubVec.size(); i++)
+		for (size_t i = 0; i < ScoresVec.size(); i++)
 		{
-			if (rounded_time <= DoubVec[i])
+			if (rounded_time <= ScoresVec[i])
 			{
 				leaderboard_string.insert(leaderboard_string.begin() + i, leader_string);
 				break;
 			}
-			if (i == DoubVec.size() - 1)
+			if (i == ScoresVec.size() - 1)
 			{
 				last_score = true;
 			}
