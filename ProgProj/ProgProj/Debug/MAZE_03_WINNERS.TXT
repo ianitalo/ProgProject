@@ -8,6 +8,7 @@ uhu            - 1.793
 s              - 2.071
 ianzin         - 2.224
 i a n i t a l o- 2.609
+lao            - 2.641
 iaaan          -  2.76
 ian            - 3.112
 ian o italo    - 3.695
