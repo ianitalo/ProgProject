@@ -1,5 +1,6 @@
 Player         -  Time
 ----------------------
+SpeedRun_Master- 0.828
 z              - 1.144
 ian speedrun   - 1.374
 uhuuu          - 1.456
