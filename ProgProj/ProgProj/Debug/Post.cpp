@@ -1,0 +1,1 @@
+Post::Post(int row, int col, char type){}int Post::getRow() const{}int Post::
